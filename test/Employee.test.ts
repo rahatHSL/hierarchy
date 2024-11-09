@@ -9,10 +9,25 @@ describe('employee api', () => {
     await DatabaseClient.initialize()
   })
 
-  it('should fetch all employees with hierarchy', async () => {
+  it('should fetch all employees with valid auth', async () => {
+    const loginData = await supertest(HttpServer)
+      .post('/auth/login')
+      .send({ pass: 'demo_credentials' })
+    const result = await supertest(HttpServer)
+      .get(`/employee/all/?id=1`)
+      .set('Authorization', `Bearer ${loginData.body.token}`)
+
+    log('employee', JSON.stringify(result.body, null, 2))
+
+    expect(loginData.status).toBe(200)
+    expect(result.status).toBe(200)
+    expect(result).toBeTruthy()
+  })
+
+  it('should not fetch all employees with hierarchy without valid auth', async () => {
     const result = await supertest(HttpServer).get(`/employee/all/?id=1`)
     log('employee', JSON.stringify(result.body, null, 2))
-    expect(result.status).toBe(200)
+    expect(result.status).toBe(400)
     expect(result).toBeTruthy()
   })
 
