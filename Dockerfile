@@ -7,7 +7,6 @@ WORKDIR ${APP_ROOT}
 COPY package.json ${APP_ROOT}
 
 RUN apk update
-RUN apk add git
 
 RUN npm install -g typescript 
 

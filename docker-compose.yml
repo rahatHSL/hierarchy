@@ -1,8 +1,8 @@
 services:
-  hierarchichy:
+  hierarchy:
     build: .
     restart: always
-    container_name: hierarchichy
+    container_name: hierarchy
     ports:
       - ${HTTP_PORT}:${HTTP_PORT}
     command: 'npm run start'
